@@ -33,15 +33,19 @@ W mxn
 x nx1
 y mx1
 '''
+
 def ParamUpdate(W,x,y,alpha=0.001,tolerance=0.000001):
     index = np.nonzero(y)[0][0];
     softmaxVec=SoftMax(np.dot(W,x));
-    #print softmaxVec;
     for i in range(0,y.shape[0]):
-        if (i==index):
-            W[i] = W[i]-alpha*(softmaxVec[i]-1)*x;
-        else: 
-            W[i] = W[i]-alpha*softmaxVec[i]*x;
+        for j in range(0,x.shape[0]):
+            W[i][j]=W[i][j]-alpha*(softmaxVec[i] - y[i])*x[j];
+    #print softmaxVec;
+    #for i in range(0,y.shape[0]):
+    #    if (i==index):
+    #        W[i] = W[i]-alpha*(softmaxVec[i]-1)*x;
+    #    else: 
+    #        W[i] = W[i]-alpha*softmaxVec[i]*x;
     return W;
 
 def GetLabelById(itsId):
@@ -85,7 +89,7 @@ def SoftmaxTrain(infilename):
             
 def Classify2(x,W):
     softmaxVec=SoftMax(np.dot(W,x));
-    print softmaxVec;
+    #print softmaxVec;
     maxElem=max(softmaxVec);
     index = 0;
     for i in range(0,len(softmaxVec)):
